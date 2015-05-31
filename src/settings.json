@@ -7,9 +7,9 @@
 	"considerBusinessValue"	:	"true",
 	"maxLevelToCheck"		:	"2",
 
-	"webPageAdressRoot"		:	"./",				// In case of webserver: "http://127.0.0.1/ADV/",
+	"webPageAdressRoot"		:	"./",
 	"webPageImageFolder"	:	"../images/",
-	"webServerFolder"		:	"./", 				// In case of webserver: "/var/www/ADV/",
+	"webServerFolder"		:	"./",
 	"htmlTemplate"			:	"./advTemplate.html",
 	"chromeCompatibility"   :   0 
 
