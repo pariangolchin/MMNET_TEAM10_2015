@@ -1,4 +1,4 @@
-======================================================
+﻿======================================================
                      WI-FI 
                   RADAR-BASED 
            PROFILING AND RECOMMENDER
@@ -43,12 +43,12 @@ Main Content
 2. Prerequisites
 ------------------------------------------------------
 
-	To execute the scripts you need these prerequisites installed on your machine:
+	To execute the scripts you need these prerequisites installed on your Linux machine:
 
 	a) Perl interpreter:
-	   For Linux/Mac OS probably it is already installed in your system (try to type perl -v in your
-	   terminal/console). For windows users we suggest to install ActivePerl. All the information related
-	   installing Perl on different OS can be found here: https://www.perl.org/get.html
+	   In Linux/Mac OS probably it is already installed in your system (try to type perl -v in your
+	   terminal/console). All the information related installing Perl on different OS can
+	   be found here: https://www.perl.org/get.html.
 
 	b) Perl JSON module:
 	   Open a terminal (Linux) or cmd (windows) and type:
