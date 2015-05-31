@@ -1,0 +1,240 @@
+=head1 NAME
+
+Profiler.pm - Profiler API
+
+=head1 SYNOPSIS
+
+  	use Profiler;
+ 
+ 	# Create Profile for User1
+ 	my $profile1 = Profiler->new({ rulesJson => $jsonStructure });
+ 
+ 	# Compute rules for User1
+ 	$profile1->runAll({ input => $dataInput1 });
+ 
+ 
+ 	# Create Profile for User2
+ 	my $profile2 = Profiler->new({ rulesJson => $jsonStructure });
+ 
+ 	# Compute rules for User2
+ 	$profile2->runAll({ input => $dataInput2 });
+ 
+ 
+ 	# Create an empty profile for the merge
+ 	my $mergedProfile = Profiler->new({ rulesJson => $jsonStructure });
+ 
+ 	# Merge profile of User1 and User2
+ 	$mergedProfile->merge({ profiles => [$profile1, $profile2] });
+ 
+ 	# Show the scores for each node on STDOUT
+ 	$mergedProfile->showScore();
+ 
+ 	# Prepare HTML page for advertisement
+ 	$mergedProfile->showAdvertisement({ settings => $settingsJson });
+ 
+
+
+
+=head1 DESCRIPTION
+
+Recently, accessing to Wi-Fi networks is been drastically increased, due to the growth of global
+interest in Wi-Fi technology. A significant amount of information  can be extracted from people’s
+preferred Wi-Fi networks. However, the main challenge is how one can explore these data for a 
+specific purpose. In fact, the main goal of this project is to investigate a solution to this problem.
+The key focus in the project is on finding the important features from the users’ Wi-Fi networks in 
+order to create their profile and demonstrate the relevant advertisement  on the public display. After 
+exploring data from Wi-Fi radar device, “semantic hierarchical tree structure” is found to be the most 
+applicable and suitable attribute to create the profiles. Then a responsive web-page based system has been 
+implemented to dynamically select and illustrate the advertisement based on the created profile.
+
+=head1 REQUIRES
+L<JSON> 
+
+imports encode_json, decode_json, to_json and from_json.
+
+http://search.cpan.org/~makamaka/JSON-2.90/lib/JSON.pm
+
+
+=head1 "PUBLIC" METHODS
+
+=head2 new
+
+ $self->new({rulesJson => $rulesJson});
+
+This method creates an object of type ("class") Profiler. Inside this object it is contained the data structure representing "rules tree" and selected advertisement.
+
+$rulesJson is the JSON string that describe the rule. It is an array of hash, in which each element is a ruleNode according to this schema:
+
+ {
+ 		"ruleName"	: <STRING>,
+ 		"parents"	: [<STRING>, <STRING>, ...],
+ 		"method"	: <STRING>,
+ 		"data"		: [<STRING>, <STRING>, ...],
+ 		"advs"		: [
+ 							{
+ 								"name": <STRING>,
+ 								"file": <STRING>,
+ 								"businessValue": <INTEGER>
+ 							},
+ 							{
+ 								...
+ 							}
+ 					  ]
+ }
+
+The $self inner structure (you should not use outside this API!) it is an hash and comprises JSON defined structure:
+
+ $self = {
+ 	rules => {
+ 		RuleName1 => {
+ 			ruleName => "RuleName1",
+ 			parents => [...],
+ 			method => ...,
+ 			data => ...,
+ 			advs => [...],
+ 			level => ...,
+ 			result => ...
+ 		},
+ 		{
+ 		RuleName2 => {
+ 			ruleName => "RuleName2",
+ 			parents => [...],
+ 			children => [...],
+ 			level => ...,
+ 			result => ...
+ 		},
+ 		...
+ 	}
+ 	adv => {
+ 		name: ...,
+ 		file: ...
+ 	}
+ }
+
+The attributes "level" and "children" of each node are computed based on tree structure, all the other are keeped as in original JSON configuration. $self->{adv} will store the selected advertisement.
+
+
+=head2 runAll
+
+ $self->runAll({input => $radarData});
+
+Run all "registred" rule-checks in the JSON File against input data (SSIDs names). 
+
+This method call private _run() that, in turn, executes each custom method, evaluates the rules and updates nodes result.
+
+
+=head2 merge
+
+ $self->merge({profiles => \@profiles});
+
+Takes as input (a reference to) an array, in which have to be saved the Profiles of one or more users. This method just sum, for each node, the result of all the relative nodes of considered user profiles.
+
+=head2 selectAdvertisement
+
+ $self->selectAdvertisement({settings => $setting});
+
+This method uses the algorithm described in details the technical documentation to select an appropriate advertisement to show to the user(s). $settings is the setting file content as JSON string.
+
+In practice, copies the selected object in $self->{adv} so that showAdvertisement() can produce the final HTML output.
+
+You probably do not have to use this method, because it is automatically called by showAdvertisement() in case $self->{adv} is empty.
+
+
+=head2 showAdvertisement
+
+ $self->showAdvertisement({settings => \$settings});
+
+This method uses data copied in $self->{adv} from selectAdvertisement() in order to produce the final HTML output (adv.html). If no data are present in $self->{adv} it calls before - in your place - selectAdvertisement().
+
+
+=head2 showScores
+
+ $self->showScores();
+
+Just for debugging purpose, he shows the overall score for each node of the tree.
+
+
+=head1 "CUSTOM" METHODS
+
+=head2 IsTravelerBasedOnNetworksNumber
+
+1 | 0 = $self->IsTravelerBasedOnNetworksNumber({input => $SSIDs, data => $numberOfNetworks});
+
+It returns 1 (true) if the user data contains more than $numberOfNetworks network names. The rationale is that if an user visited several networks, it is resonable that he/her is a "traveler". The correct threshold to use should require accurate benchmarking.
+
+
+=head2 PatternSearch
+
+1 | 0 = $self->PatternSearch();
+
+It returns 1 (true) if the user data is compatible ("contains") one or more string patterns. String patterns are Perl regular expressions (regex).
+
+
+=head1 "PRIVATE" METHODS
+
+=head2 NOTE
+
+Although Perl does not implement a real distinction between public and private methods, you should not use these methods
+ directly from the calling script. 
+
+Here is a quick description just for smoother eventual maintenance of the source code and to allow you to more easily follow the software logic.
+
+=head2 _computeChildren
+
+ $self->_computeChildren();
+
+Uses nested iterations inside three data structure to associate, for each node, the parent(s), if any.
+
+
+=head2 _computeAllLevels
+
+ $self->_computeAllLevels();
+
+For each node compute the level (leaves is level 1). Node on the same level "contains the same amount of concept information". If a node can have different leveles according to his children, keep the higest one; eg:
+
+ ROOT -> A -> B -> C
+         |    \--> D
+         \-------> E
+
+In this case node A will have level = 3 (not 2).
+
+This method just checks all the nodes of the tree; if one node is a leaf (so it has a method associated), it calls on this node the method _computeLevel().
+
+=head2 _computeLevel
+
+ $self->_computeLevel({rule => \%ruleObject, childLevel => $childLevel});
+
+Recursively move from a selected leaf to the root and compute, for each node of the tree the correct level.
+
+
+=head2 _run
+
+ 1 | 0 = $self->_run({ruleName => $ruleName});
+
+Given a ruleName, if there is an associated method, it calls this subroutine (that can return 1 or 0). After that it call _incrementParentRule() to increment recursively the score of the parents until reach the root.
+
+
+=head2 _incrementParentRule
+
+ $self->_incrementParentRule({value => $valueFromChild, parents = \@parents});
+
+Compute the score of parents. After that, for each parent, call again _incrementParentRule(), until there are no more parents (eg: ROOT).
+
+If there are N parent and the value to propagate is 1, each parent will be incresed by 1/N.
+
+
+
+=head2 _getAdvertisementFromRule
+
+ $self->_getAdvertisementFromRule({rule => \%ruleObject, advertisements => \@advertisementObjects});
+
+Once that selectAdvertisement() find one or more node(s) that describe the user(s), this method move down in the tree (from ROOT to leaves) and find all the leaves descendent by the selected node(s). If the score in the leaves is not zero, it save the associated advertisement objects inside the advertisements (array reference initially empty, passed be selectAdvertisement). The appropriate advertisment will be (more or less) randomly chosen from the final @advertisements array.
+
+
+=head1 AUTHORS
+
+Bernadette Edith Ndjekal	(bernadette.ndjekal@studenti.unitn.it)
+Parian Golchin 				(parian.golchin@studenti.unitn.it)
+
+
+=cut

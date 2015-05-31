@@ -1,0 +1,159 @@
+<!doctype html> 
+<html>
+	<head>
+		<title>SmartAdv</title>
+		<!--COMPATIBILITY-->
+		<script src="./jquery-1.11.3.min.js"></script>
+	</head>
+	<body>
+
+		<!-- Here the Title -->
+		<div id="title">
+			<span id="titleText" style="padding:0px; margin:0px; display:none">
+				__TITLE__
+			<span>
+		</div>
+
+		<!-- Here the Image -->
+	    <img id="image" src="__IMAGE__" style="display: none">
+
+		<script type="text/javascript">
+	
+			// https://forum.jquery.com/topic/responsive-image-resizing-that-fills-the-browers-window
+
+			var imageHeightWindowsRatio = 0.8;
+			var imageWidthWindowsRatio  = 0.8;
+			var titleRatio              = 0.8;
+
+			var image_width; 
+			var image_height;
+			var original_image_width;
+			var original_image_height;
+
+			// When document is loaded and image too in the browser...
+			$( window ).load(function() {
+
+				$image = $('#image');
+				$title = $('#title');
+
+				// Find the image width and height
+				image_width  = $image.width();
+				image_height = $image.height();
+
+				// Save the original size of the image (to avoid to streach the image if it is
+				//	litler than its container-box)
+				original_image_width  = image_width;
+				original_image_height = image_height;
+
+				// Resize the image an positioning the title
+				winResized();
+
+				// Show image
+				$image.show();
+
+				// Everey time windows is resized, resize the image and show it again!
+				$(window).bind('resize',function() {
+					winResized();
+				});
+									
+				// This function:
+				// 1) Resize the image according with screen size
+				// 2) Move the image in the center of the screen
+				// 3) Resize the title according with screen size
+				// 4) If title become multi-line, it reduce font size to force to use just one line
+				function winResized() {
+				
+					if ($image) {
+
+						// Compoute the min margin to keep in the page
+						var minMarginLeftRight = $(window).width()  * (1 - imageWidthWindowsRatio) / 2;
+						var minMarginTopBottom = $(window).height() * (1 - imageHeightWindowsRatio) / 2;
+
+						// Define the size of image box
+						var ww 	=	$(window).width() 	- 2 * minMarginLeftRight;
+						var wh 	=	$(window).height() 	- 2 * minMarginTopBottom;		
+
+						// understand if image is portrait or landscape view and resize the image
+						// to fit the bigger side:
+						// 		iwr is the final image width
+						// 		ihr is the final image height
+						var f 	=	Math.min(ww/image_width,wh/image_height);
+						var iwr =	Math.round(image_width  * f);
+						var ihr =	Math.round(image_height * f);
+
+						// Avoid to streach picture if screen is bigger than image
+						// (if the image is littler than the screen, use its original size)
+						if(iwr > original_image_width || ihr > original_image_height){
+							iwr = original_image_width;
+							ihr = original_image_height;
+						}
+ 	
+						// Resize image and center in the screen
+						$image.css({
+							'position':'fixed',
+							'width':  iwr,
+							'height': ihr,
+							'left': (minMarginLeftRight +  (Math.round(ww-iwr)/2) )+'px',
+							'top':  (minMarginTopBottom  + (Math.round(wh-ihr)/2) )+'px',
+							'padding' : "0px",
+							'margin' : "0px"
+						});
+
+						// Compute the font size of the title according with titleRatio
+						var titleFontSize = (  $(window).height() - ihr) / 2 * titleRatio;
+
+						// Compute title top.
+						var titleTop = ( ($(window).height() - ihr) / 2 - titleFontSize) /2;
+
+						$("#titleText").css({
+							'padding' : '0px',
+							'position':'fixed',
+							'top': titleTop + 'px',
+							'fontSize': titleFontSize + 'px',
+							'left': '0px',
+							'height': titleFontSize + 'px',
+
+							'textTransform': 'uppercase',
+							'letter-spacing': '0.1em',
+							'font-weight': 'bold',
+							'color': '#222222',
+							'zIndex': 2,
+							'text-shadow': '2px 2px 4px #555555',
+							'display': 'block'
+						});
+
+
+						// This block avoids that title become multiline: if the width of the title is >=
+						// the width of the windows, it means that title will be show in more than one line
+						// If it happen reduce the title font-size untill all the title fit in just one line
+						if($("#titleText").width() >= $(window).width()){
+							while(1){
+								titleFontSize = titleFontSize - 1;
+								$("#titleText").css({
+									'left': '0px',
+									'fontSize': titleFontSize + 'px',
+									'height': titleFontSize + 'px',
+								});
+								if( $("#titleText").width() < $(window).width() ){
+									break;
+								}
+							}
+						}
+						// If te title fit one line, horizzontaly center the text content
+						else	{
+							var titleLeft = ($(window).width() - $("#titleText").width()) / 2;
+								$("#titleText").css({
+									'left': titleLeft + 'px',
+								});
+						}
+
+						// Show the image if it was hide
+						$image.show();
+					}
+				}
+
+			});
+		</script>
+	</body>
+</html>
+

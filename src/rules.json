@@ -1,0 +1,404 @@
+[
+	{
+		"ruleName"		: "ROOT"
+	},
+
+
+
+	{
+		"ruleName"		: "IsTravelerBasedOnNetworksNumber",
+		"method"		: "IsTravelerBasedOnNetworksNumber",
+		"parents"		: ["IsHousing", "IsTransport"],
+		"data"			: 4
+	},
+
+
+
+	{
+		"ruleName"	: "IsHousing",
+		"parents"	: ["ROOT"]
+	},
+	{
+		"ruleName"	: "IsHotel",
+		"parents"	: ["IsHousing"],
+		"method"	: "PatternSearch",
+		"data"		: ["hotel", "floor","albergo","etage","lobby","reception"],
+		"advs"		: 	[
+							{
+								"name": 			"Grand Hotel",
+								"file": 			"Hotel-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Hilton Hotel",
+								"file": 			"Hotel-2.jpg",
+								"businessValue":	12
+							},
+							{
+								"name": 			"Hotel Val Pusteria, Centro benessere",
+								"file": 			"Hotel-3.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Hotel Trentino Charme",
+								"file": 			"hotelTrentinoCharme.jpg",
+								"businessValue":	12
+							}						
+
+						]
+	},
+	{
+		"ruleName"	: "IsHostel",
+		"parents"	: ["IsHousing"],		
+		"method"	: "PatternSearch",
+		"data"		: ["hostel","ostello"],
+		"advs"		: 	[
+							{
+								"name": 			"Ostello Parco d'Abruzzo",
+								"file": 			"Hostel-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Selected Hostel",
+								"file": 			"Hostel-2.jpg",
+								"businessValue":	12
+							}
+						]	
+	},
+	{
+		"ruleName"	: "IsAppartment",
+		"parents"	: ["IsHousing"],		
+		"method"	: "PatternSearch",
+		"data"		: ["appartment", "appartemento","Apartementos", "appartement"],
+		"advs"		: 	[
+							{
+								"name": 			"Le residenze Le Albere vi aspettano",
+								"file": 			"leAlbere.jpg",
+								"businessValue":	123
+							}
+						]	
+	},
+	    {
+		"ruleName"	: "IsB&B",
+		"parents"	: ["IsHousing","IsFood"],		
+		"method"	: "PatternSearch",
+		"data"		: ["bed","breakfast","b&b"]	,
+		"advs"		: 	[
+							{
+								"name": 			"www.airbnb.com",
+								"file": 			"B&B-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"b&b Casa Baltera a Trento!",
+								"file": 			"bb1.jpg",
+								"businessValue":	123
+							}
+						]
+	},
+
+
+
+	{
+		"ruleName"	: "IsFood",
+		"parents"	: ["ROOT"]
+	},
+	{
+		"ruleName"	: "IsBar",
+		"parents"	: ["IsFood"],
+		"method"	: "PatternSearch",
+		"data"		: ["bar", "pub","caffe","stella"],
+		"advs"		: 	[
+							{
+								"name": 			"Roxy Bar",
+								"file": 			"Bar-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Tutto Haccp",
+								"file": 			"Bar-2.jpg",
+								"businessValue":	12
+							},
+							{
+								"name": 			"Cafe Noir",
+								"file": 			"Bar-3.jpg",
+								"businessValue":	12
+							},
+							{
+								"name": 			"Birreria Ristorante Pedavena, Trento",
+								"file": 			"pedavena.jpg",
+								"businessValue":	120
+							}
+						]
+	},
+	{
+		"ruleName"	: "IsRestaurant",
+		"parents"	: ["IsFood"],
+		"method"	: "PatternSearch",
+		"data"		: ["restaurant","Ristorante","Salones"],
+		"advs"		: 	[
+							{
+								"name": 			"Hotel Wellness e Ristorante a Lavis",
+								"file": 			"hotel-1920x1080.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Birreria Ristorante Pedavena, Trento",
+								"file": 			"pedavena.jpg",
+								"businessValue":	120
+							}
+						]	
+	},
+	    {
+	    "ruleName"	: "IsFastFood",
+		"parents"	: ["IsFood"],
+		"method"	: "PatternSearch",
+		"data"		: ["fastfood", "MacDonald","Mcdonald","burgerking","KFC","Quick","Pizza"],
+		"advs"		: 	[
+							{
+								"name": 			"KFC",
+								"file": 			"FastFood-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"McDonald",
+								"file": 			"FastFood-2.jpg",
+								"businessValue":	12
+							},
+							{
+								"name": 			"UK Chicken & Pizza",
+								"file": 			"FastFood-3.jpg",
+								"businessValue":	12
+							},
+							{
+								"name": 			"Quick",
+								"file": 			"FastFood-4.jpg",
+								"businessValue":	12
+							},
+							{
+								"name": 			"KING BURGER",
+								"file": 			"FastFood-5.jpg",
+								"businessValue":	12
+							}
+						]
+	    },
+	    {
+		"ruleName"	: "IsFreeNetworks",
+		"parents"	: ["ROOT"]
+	},
+	{
+		"ruleName"	: "IsFree",
+		"parents"	: ["IsFreeNetworks"],
+		"method"	: "PatternSearch",
+		"data"		: ["free","Public", "trentino network","futur3","f3"],	
+		"advs"		:	[
+							{
+								"name": 			"Trentino Event",
+								"banner": 			"Colour Run Shine Tour",
+								"file": 			"free-2.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Cinema in Cortile",
+								"file": 			"Free-1.jpg",
+								"businessValue":	12
+							}
+						]
+	},
+	 {
+		"ruleName"	: "IsTransport",
+		"parents"	: ["ROOT"]
+	},
+	{
+		"ruleName"	: "IsTrain",
+		"parents"	: ["IsTransport"],
+		"method"	: "PatternSearch",
+		"data"		: ["frecc", "rail","italo","thalys"],
+		"advs"		: 	[
+							{
+								"name": 			"Italo",
+								"file": 			"Train-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Thalys",
+								"file": 			"Train-2.jpg",
+								"businessValue":	12
+							},
+							{
+								"name": 			"FrecciaBianca",
+								"file": 			"Train-3.jpg",
+								"businessValue":	12
+							}
+						]	
+	},
+	{
+		"ruleName"	: "IsAirport",
+		"parents"	: ["IsTransport"],
+		"method"	: "PatternSearch",
+		"data"		: ["boingo", "airport","Orio BGY"],
+		"advs"		: 	[
+							{
+								"name": 			"Ryan Air",
+								"banner": 			"Visitate questo hotel",
+								"file": 			"Airport-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Alitalia",
+								"file": 			"Airport-2.jpg",
+								"businessValue":	12
+							}
+						]	
+	},
+	{
+		"ruleName"	: "IsBus",
+		"parents"	: ["IsTransport"],
+		"method"	: "PatternSearch",
+		"data"		: ["bus", "idbus"],	
+		"advs"		: 	[
+							{
+								"name": 			"iDBus",
+								"file": 			"bus-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"IC Bus",
+								"file": 			"Bus-2.jpg",
+								"businessValue":	12
+							}
+						]
+	},
+	 {
+	 	"ruleName"	: "IsWirelessNetworks",
+		"parents"	: ["ROOT"]
+	},
+	{
+		"ruleName"	: "IsVodafone",
+		"parents"	: ["IsWirelessNetworks"],
+		"method"	: "PatternSearch",
+		"data"		: ["Vodafone"],
+		"advs"		: 	[
+							{
+								"name": 			"Vodafone for Calls and ADSL",
+								"file": 			"Vodafone-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Christmas Discount for Tim",
+								"file": 			"vodafoneT-2.jpg",
+								"businessValue":	12
+							}
+						]	
+	},
+	{
+		"ruleName"	: "IsTelecom",
+		"parents"	: ["IsWirelessNetworks"],
+		"method"	: "PatternSearch",
+		"data"		: ["Alice","telecom"],
+		"advs"		: 	[
+							{
+								"name": 			"Telecom Promotion",
+								"file": 			"Telecom-1.png",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Telecom Alice",
+								"file": 			"TelecomAlice-2.png",
+								"businessValue":	123
+							}
+						]	
+	},
+	{
+		"ruleName"	: "IsTre",
+		"parents"	: ["IsWirelessNetworks"],
+		"method"	: "PatternSearch",
+		"data"		: ["Webcube","Fastweb","Tre","Webpocket"],
+		"advs"		: 	[
+							{
+								"name": 			"Tre FastWeb",
+								"banner": 			"Visitate questo hotel",
+								"file": 			"TreFastweb-1.png",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Tre WebCube",
+								"file": 			"TreWebcube-2.jpg",
+								"businessValue":	12
+							}
+						]	
+	},
+
+	{
+		"ruleName"	: "IsWind",
+		"parents"	: ["IsWirelessNetworks"],
+		"method"	: "PatternSearch",
+		"data"		: ["Infostrada", "Wind"],
+		"advs"		: 	[
+							{
+								"name": 			"Win Smart Phone with Wind Event",
+								"file": 			"Wind-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Wind Infostrada",
+								"file": 			"Windinfo-2.jpg",
+								"businessValue":	12
+							}
+						]	
+	},
+
+	{
+		"ruleName"	: "IsTim",
+		"parents"	: ["IsWirelessNetworks"],
+		"method"	: "PatternSearch",
+		"data"		: ["Tim"],
+		"advs"		: 	[
+							{
+								"name": 			"Tim Promotion",
+								"file": 			"Tim-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Vodafone low cost promotion in summer",
+								"file": 			"TimV-2.jpg",
+								"businessValue":	12
+							}
+						]	
+	},
+	{
+	 	"ruleName"	: "IsOperatingSystem",
+		"parents"	: ["ROOT"]
+	},
+	{
+		"ruleName"	: "IsApple",
+		"parents"	: ["IsOperatingSystem"],
+		"method"	: "PatternSearch",
+		"data"		: ["MACBook","iphone","Ipad"],
+		"advs"		: 	[
+							{
+								"name": 			"Apple Discount for Students",
+								"file": 			"iphone7-1.jpg",
+								"businessValue":	123
+							}
+						]	
+	},
+	{
+		"ruleName"	: "IsAndroid",
+		"parents"	: ["IsOperatingSystem"],
+		"method"	: "PatternSearch",
+		"data"		: ["Android","Samsung"],
+		"advs"		: 	[
+							{
+								"name": 			"Android New Technology",
+								"file": 			"Android-1.jpg",
+								"businessValue":	123
+							},
+							{
+								"name": 			"Galaxy S5 is Coming Out Today!",
+								"file": 			"galaxy-s5-review.png",
+								"businessValue":	12
+							}
+						]	
+	}
+]

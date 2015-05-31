@@ -1,0 +1,283 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Profiler.pm - Profiler API</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body>
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<p><a name="__index__"></a></p>
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#requires">REQUIRES</a></li>
+	<li><a href="#public_methods">&quot;PUBLIC&quot; METHODS</a></li>
+	<ul>
+
+		<li><a href="#new">new</a></li>
+		<li><a href="#runall">runAll</a></li>
+		<li><a href="#merge">merge</a></li>
+		<li><a href="#selectadvertisement">selectAdvertisement</a></li>
+		<li><a href="#showadvertisement">showAdvertisement</a></li>
+		<li><a href="#showscores">showScores</a></li>
+	</ul>
+
+	<li><a href="#custom_methods">&quot;CUSTOM&quot; METHODS</a></li>
+	<ul>
+
+		<li><a href="#istravelerbasedonnetworksnumber">IsTravelerBasedOnNetworksNumber</a></li>
+		<li><a href="#patternsearch">PatternSearch</a></li>
+	</ul>
+
+	<li><a href="#private_methods">&quot;PRIVATE&quot; METHODS</a></li>
+	<ul>
+
+		<li><a href="#note">NOTE</a></li>
+		<li><a href="#_computechildren">_computeChildren</a></li>
+		<li><a href="#_computealllevels">_computeAllLevels</a></li>
+		<li><a href="#_computelevel">_computeLevel</a></li>
+		<li><a href="#_run">_run</a></li>
+		<li><a href="#_incrementparentrule">_incrementParentRule</a></li>
+		<li><a href="#_getadvertisementfromrule">_getAdvertisementFromRule</a></li>
+	</ul>
+
+	<li><a href="#authors">AUTHORS</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Profiler.pm - Profiler API</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+        use Profiler;
+ 
+        # Create Profile for User1
+        my $profile1 = Profiler-&gt;new({ rulesJson =&gt; $jsonStructure });
+ 
+        # Compute rules for User1
+        $profile1-&gt;runAll({ input =&gt; $dataInput1 });
+ 
+ 
+        # Create Profile for User2
+        my $profile2 = Profiler-&gt;new({ rulesJson =&gt; $jsonStructure });
+ 
+        # Compute rules for User2
+        $profile2-&gt;runAll({ input =&gt; $dataInput2 });
+ 
+ 
+        # Create an empty profile for the merge
+        my $mergedProfile = Profiler-&gt;new({ rulesJson =&gt; $jsonStructure });
+ 
+        # Merge profile of User1 and User2
+        $mergedProfile-&gt;merge({ profiles =&gt; [$profile1, $profile2] });
+ 
+        # Show the scores for each node on STDOUT
+        $mergedProfile-&gt;showScore();
+ 
+        # Prepare HTML page for advertisement
+        $mergedProfile-&gt;showAdvertisement({ settings =&gt; $settingsJson });</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>Recently, accessing to Wi-Fi networks is been drastically increased, due to the growth of global
+interest in Wi-Fi technology. A significant amount of information  can be extracted from people’s
+preferred Wi-Fi networks. However, the main challenge is how one can explore these data for a 
+specific purpose. In fact, the main goal of this project is to investigate a solution to this problem.
+The key focus in the project is on finding the important features from the users’ Wi-Fi networks in 
+order to create their profile and demonstrate the relevant advertisement  on the public display. After 
+exploring data from Wi-Fi radar device, “semantic hierarchical tree structure” is found to be the most 
+applicable and suitable attribute to create the profiles. Then a responsive web-page based system has been 
+implemented to dynamically select and illustrate the advertisement based on the created profile.</p>
+<p>
+</p>
+<hr />
+<h1><a name="requires_json">REQUIRES
+<em>JSON</em></a></h1>
+<p>imports encode_json, decode_json, to_json and from_json.</p>
+<p><a href="http://search.cpan.org/~makamaka/JSON-2.90/lib/JSON.pm">http://search.cpan.org/~makamaka/JSON-2.90/lib/JSON.pm</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="public_methods">&quot;PUBLIC&quot; METHODS</a></h1>
+<p>
+</p>
+<h2><a name="new">new</a></h2>
+<pre>
+ $self-&gt;new({rulesJson =&gt; $rulesJson});</pre>
+<p>This method creates an object of type (&quot;class&quot;) Profiler. Inside this object it is contained the data structure representing &quot;rules tree&quot; and selected advertisement.</p>
+<p>$rulesJson is the JSON string that describe the rule. It is an array of hash, in which each element is a ruleNode according to this schema:</p>
+<pre>
+ {
+                &quot;ruleName&quot;      : &lt;STRING&gt;,
+                &quot;parents&quot;       : [&lt;STRING&gt;, &lt;STRING&gt;, ...],
+                &quot;method&quot;        : &lt;STRING&gt;,
+                &quot;data&quot;          : [&lt;STRING&gt;, &lt;STRING&gt;, ...],
+                &quot;advs&quot;          : [
+                                                        {
+                                                                &quot;name&quot;: &lt;STRING&gt;,
+                                                                &quot;file&quot;: &lt;STRING&gt;,
+                                                                &quot;businessValue&quot;: &lt;INTEGER&gt;
+                                                        },
+                                                        {
+                                                                ...
+                                                        }
+                                          ]
+ }</pre>
+<p>The $self inner structure (you should not use outside this API!) it is an hash and comprises JSON defined structure:</p>
+<pre>
+ $self = {
+        rules =&gt; {
+                RuleName1 =&gt; {
+                        ruleName =&gt; &quot;RuleName1&quot;,
+                        parents =&gt; [...],
+                        method =&gt; ...,
+                        data =&gt; ...,
+                        advs =&gt; [...],
+                        level =&gt; ...,
+                        result =&gt; ...
+                },
+                {
+                RuleName2 =&gt; {
+                        ruleName =&gt; &quot;RuleName2&quot;,
+                        parents =&gt; [...],
+                        children =&gt; [...],
+                        level =&gt; ...,
+                        result =&gt; ...
+                },
+                ...
+        }
+        adv =&gt; {
+                name: ...,
+                file: ...
+        }
+ }</pre>
+<p>The attributes &quot;level&quot; and &quot;children&quot; of each node are computed based on tree structure, all the other are keeped as in original JSON configuration. $self-&gt;{adv} will store the selected advertisement.</p>
+<p>
+</p>
+<h2><a name="runall">runAll</a></h2>
+<pre>
+ $self-&gt;runAll({input =&gt; $radarData});</pre>
+<p>Run all &quot;registred&quot; rule-checks in the JSON File against input data (SSIDs names).</p>
+<p>This method call private <code>_run()</code> that, in turn, executes each custom method, evaluates the rules and updates nodes result.</p>
+<p>
+</p>
+<h2><a name="merge">merge</a></h2>
+<pre>
+ $self-&gt;merge({profiles =&gt; \@profiles});</pre>
+<p>Takes as input (a reference to) an array, in which have to be saved the Profiles of one or more users. This method just sum, for each node, the result of all the relative nodes of considered user profiles.</p>
+<p>
+</p>
+<h2><a name="selectadvertisement">selectAdvertisement</a></h2>
+<pre>
+ $self-&gt;selectAdvertisement({settings =&gt; $setting});</pre>
+<p>This method uses the algorithm described in details the technical documentation to select an appropriate advertisement to show to the user(s). $settings is the setting file content as JSON string.</p>
+<p>In practice, copies the selected object in $self-&gt;{adv} so that <code>showAdvertisement()</code> can produce the final HTML output.</p>
+<p>You probably do not have to use this method, because it is automatically called by <code>showAdvertisement()</code> in case $self-&gt;{adv} is empty.</p>
+<p>
+</p>
+<h2><a name="showadvertisement">showAdvertisement</a></h2>
+<pre>
+ $self-&gt;showAdvertisement({settings =&gt; \$settings});</pre>
+<p>This method uses data copied in $self-&gt;{adv} from <code>selectAdvertisement()</code> in order to produce the final HTML output (adv.html). If no data are present in $self-&gt;{adv} it calls before - in your place - <code>selectAdvertisement()</code>.</p>
+<p>
+</p>
+<h2><a name="showscores">showScores</a></h2>
+<pre>
+ $self-&gt;showScores();</pre>
+<p>Just for debugging purpose, he shows the overall score for each node of the tree.</p>
+<p>
+</p>
+<hr />
+<h1><a name="custom_methods">&quot;CUSTOM&quot; METHODS</a></h1>
+<p>
+</p>
+<h2><a name="istravelerbasedonnetworksnumber">IsTravelerBasedOnNetworksNumber</a></h2>
+<p>1 | 0 = $self-&gt;IsTravelerBasedOnNetworksNumber({input =&gt; $SSIDs, data =&gt; $numberOfNetworks});</p>
+<p>It returns 1 (true) if the user data contains more than $numberOfNetworks network names. The rationale is that if an user visited several networks, it is resonable that he/her is a &quot;traveler&quot;. The correct threshold to use should require accurate benchmarking.</p>
+<p>
+</p>
+<h2><a name="patternsearch">PatternSearch</a></h2>
+<p>1 | 0 = $self-&gt;<code>PatternSearch()</code>;</p>
+<p>It returns 1 (true) if the user data is compatible (&quot;contains&quot;) one or more string patterns. String patterns are Perl regular expressions (regex).</p>
+<p>
+</p>
+<hr />
+<h1><a name="private_methods">&quot;PRIVATE&quot; METHODS</a></h1>
+<p>
+</p>
+<h2><a name="note">NOTE</a></h2>
+<p>Although Perl does not implement a real distinction between public and private methods, you should not use these methods
+ directly from the calling script.</p>
+<p>Here is a quick description just for smoother eventual maintenance of the source code and to allow you to more easily follow the software logic.</p>
+<p>
+</p>
+<h2><a name="_computechildren">_computeChildren</a></h2>
+<pre>
+ $self-&gt;_computeChildren();</pre>
+<p>Uses nested iterations inside three data structure to associate, for each node, the parent(s), if any.</p>
+<p>
+</p>
+<h2><a name="_computealllevels">_computeAllLevels</a></h2>
+<pre>
+ $self-&gt;_computeAllLevels();</pre>
+<p>For each node compute the level (leaves is level 1). Node on the same level &quot;contains the same amount of concept information&quot;. If a node can have different leveles according to his children, keep the higest one; eg:</p>
+<pre>
+ ROOT -&gt; A -&gt; B -&gt; C
+         |    \--&gt; D
+         \-------&gt; E</pre>
+<p>In this case node A will have level = 3 (not 2).</p>
+<p>This method just checks all the nodes of the tree; if one node is a leaf (so it has a method associated), it calls on this node the method <code>_computeLevel()</code>.</p>
+<p>
+</p>
+<h2><a name="_computelevel">_computeLevel</a></h2>
+<pre>
+ $self-&gt;_computeLevel({rule =&gt; \%ruleObject, childLevel =&gt; $childLevel});</pre>
+<p>Recursively move from a selected leaf to the root and compute, for each node of the tree the correct level.</p>
+<p>
+</p>
+<h2><a name="_run">_run</a></h2>
+<pre>
+ 1 | 0 = $self-&gt;_run({ruleName =&gt; $ruleName});</pre>
+<p>Given a ruleName, if there is an associated method, it calls this subroutine (that can return 1 or 0). After that it call <code>_incrementParentRule()</code> to increment recursively the score of the parents until reach the root.</p>
+<p>
+</p>
+<h2><a name="_incrementparentrule">_incrementParentRule</a></h2>
+<pre>
+ $self-&gt;_incrementParentRule({value =&gt; $valueFromChild, parents = \@parents});</pre>
+<p>Compute the score of parents. After that, for each parent, call again <code>_incrementParentRule()</code>, until there are no more parents (eg: ROOT).</p>
+<p>If there are N parent and the value to propagate is 1, each parent will be incresed by 1/N.</p>
+<p>
+</p>
+<h2><a name="_getadvertisementfromrule">_getAdvertisementFromRule</a></h2>
+<pre>
+ $self-&gt;_getAdvertisementFromRule({rule =&gt; \%ruleObject, advertisements =&gt; \@advertisementObjects});</pre>
+<p>Once that <code>selectAdvertisement()</code> find one or more node(s) that describe the user(s), this method move down in the tree (from ROOT to leaves) and find all the leaves descendent by the selected node(s). If the score in the leaves is not zero, it save the associated advertisement objects inside the advertisements (array reference initially empty, passed be selectAdvertisement). The appropriate advertisment will be (more or less) randomly chosen from the final @advertisements array.</p>
+<p>
+</p>
+<hr />
+<h1><a name="authors">AUTHORS</a></h1>
+<p><table cellspacing="0" cellpadding="0"><tr><td>Bernadette Edith Ndjekal<td>(<a href="mailto:bernadette.ndjekal@studenti.unitn.it">bernadette.ndjekal@studenti.unitn.it</a>)
+<tr><td>Parian Golchin <td>(<a href="mailto:parian.golchin@studenti.unitn.it">parian.golchin@studenti.unitn.it</a>)</table></p>
+
+</body>
+
+</html>

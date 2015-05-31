@@ -1,0 +1,16 @@
+{
+	"debug"					:	"1",
+
+	"refreshTime"			:	"10",
+
+	"rulesFile"				:	"rules.json",
+	"considerBusinessValue"	:	"true",
+	"maxLevelToCheck"		:	"2",
+
+	"webPageAdressRoot"		:	"./",				// In case of webserver: "http://127.0.0.1/ADV/",
+	"webPageImageFolder"	:	"../images/",
+	"webServerFolder"		:	"./", 				// In case of webserver: "/var/www/ADV/",
+	"htmlTemplate"			:	"./advTemplate.html",
+	"chromeCompatibility"   :   0 
+
+}
