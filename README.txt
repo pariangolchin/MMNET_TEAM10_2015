@@ -185,8 +185,8 @@ Main Content
 6. How to run
 ------------------------------------------------------
 	Before running the scripts please read also the following chapters.
-	We assume you are using a Linux system, in other OS the procedure should be very similar.
-	Briefly to run the main script, go in the src folder of the project and type this command:
+	We assume you are using a Linux system;
+	briefly to run the main script, go in the src folder of the project and type this command:
 
 	[RADAR APPLICATION] | perl ./userProfile.pl [SETTING-FILE]
 
