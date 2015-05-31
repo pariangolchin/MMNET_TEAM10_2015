@@ -552,7 +552,7 @@ sub _computeAllLevels(){
 	my $param = shift;
 
 	# 1: find the leaves (rules with method) and go up in the tree for parents
-	foreach my $ruleName (keys $self->{rules}){
+	foreach my $ruleName (keys %{$self->{rules}}){
 		if($self->{rules}->{$ruleName}->{method}){
 			$self->_computeLevel({
 				rule => $self->{rules}->{$ruleName},
