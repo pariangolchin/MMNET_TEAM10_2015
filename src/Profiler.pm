@@ -470,11 +470,11 @@ sub selectAdvertisement(){
 	}
 	# Else picks considering buisinessValue
 	else {
-		my $randomValue = int(rand($businessValueSum + 1));
+		my $randomValue = int(rand($businessValueSum) + 1);
 		
 		if($settings->{debug}){
 			print "\nDEBUG: Random value\t$randomValue\n\n";
-		}DEBUG: 
+		}
 
 		# For each advertisement
 		my $previousValue = 0;
