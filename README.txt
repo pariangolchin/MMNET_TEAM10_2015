@@ -43,7 +43,7 @@ Main Content
 2. Prerequisites
 ------------------------------------------------------
 
-	To execute the scripts you need theese presrequisites installed on your machine:
+	To execute the scripts you need these prerequisites installed on your machine:
 
 	a) Perl interpreter:
 	   For Linux/Mac OS probably it is already installed in your system (try to type perl -v in your
@@ -97,29 +97,29 @@ Main Content
 	
 		refreshTime:	[integer]
 			It is the time (in sec) that the system waits to collect data from different users before start 
-			to build the user's profiles and the merged profile.
-			We suggested to use short times (eg 10 sec) if the screen is positioned in a place where 
+			building the user's profiles and the merged profile.
+			We suggest to use short times (eg 10 sec) if the screen is positioned in a place where 
 			people pass quickly (eg: shop window), longer time (eg 60 sec) if the screen is positioned in a 
-			place where people usually stand (eg: bus-stop, train plattforms, ...).
+			place where people usually stand (eg: bus-stop, train platforms, ...).
 	
 		rulesFile:	[filename]
-			Is the file that represent the tree.
+			Is the file that represents the tree.
 	
 		considerBusinessValue:	[true|false]
-			If it is setted to "true", after selecting the compatible advertisments the system will pick one
-			randomy but consider the probability to chose as linear function of the buisinessValues associated
-			to each selected avertisments. If it setted to "false", it will use a uniform distribution probability.
+			If it is setted to "true", after selecting the compatible advertisements the system will pick one
+			randomly but consider the probability to choose a linear function of the buisinessValues associated
+			to each selected avertisement. If it is setted to "false", it will use a uniform distribution probability.
 		
 		maxLevelToCheck:	[integer]
 			It is the max level the algorithm will check to find an absolute highest score value in the node of the tree.
-			Lower it is, more specific the concepts will be.
+			Lower it is, more specific will be the concepts.
 
 		webPageAdressRoot:	[string]
 			It is the root of html files. Use just "." if you don't want to access data through web-server, otherwise
 			put the url of root (eg: "http://127.0.0.1/ADV/").
 		
 		webPageImageFolder:	[string]
-			It is the folder with multimedia files, reffer to webPageAdressRoot (eg: "/images/")
+			It is the folder with image files, refer to webPageAdressRoot (eg: "/images/")
 	
 		webServerFolder:	[string]
 			It is the absolute path of root ON THE FILE SYSTEM (software will use this folder 
@@ -133,7 +133,7 @@ Main Content
 5. How to prepare the tree structure
 ------------------------------------------------------	
 	Tree structure is saved in a json text file (by default rules.json). Formally the tree structure 
-	is an array of object. Each object (node) represent a rule and/or a semantic concept.
+	is an array of object. Each object (node) represents a rule and/or a semantic concept.
 	The structure should be this:
 	
 	{
@@ -157,15 +157,15 @@ Main Content
 	
 	In which the only mandatory field is "ruleName". More in details:
 		ruleName:	
-			is the name that identify the rule inside the hash (map) internal structure.
+			is the name that identifies the rule inside the hash (map) internal structure.
 		parents:
-		 	array of ruleName string that represent the node(s) connected to current node,
+		 	array of ruleName string that represents the node(s) connected to current node,
 		 	with higher level
 		method:
 		 	it is the name of Perl "custom" subroutine to evaluate input data (just node with level = 1,
 		 	so leaves of the tree) should be associated to one method.
 		data:
-		 	it is the "internal" data will be passed to the custom method to evaluate the user input
+		 	it is the "internal" data that will be passed to the method to evaluate the user input
 		 	data. According to the implementation of Perl method, it could be any kind of data
 		 	(scalar, array, hash or complex data structure).
 		advs:
@@ -176,33 +176,33 @@ Main Content
 			file:
 				it will be the image name (or in general the file name to pass to adv template).
 			businessValue:
-				this value is linear related to the probability to pick this advertisment 
-				from the array of compatible advertisments. It could be, for example the ammount
-				of money paied from customer for his/her advertisement campaign.
+				this value is linearly related to the probability to pick this advertisement 
+				from the array of compatible advertisements. It could be, for example the amount
+				of money paid by customer for his/her advertisement campaign.
 	
 
 ------------------------------------------------------
 6. How to run
 ------------------------------------------------------
-	[Before running the scripts please read also the following chapters.]
+	Before running the scripts please read also the following chapters.
 	We assume you are using a Linux system, in other OS the procedure should be very similar.
 	Briefly to run the main script, go in the src folder of the project and type this command:
 
 	[RADAR APPLICATION] | perl ./userProfile.pl [SETTING-FILE]
 
-	in which we assume [RADAR APPLICATION] is an application that read data from radar and print
+	in which we assume [RADAR APPLICATION] is an application that reads data from radar and prints
 	in STDOUT data in the format defined in the next chapter.
 
-	If [RADAR APPLICATION] write instead (in real time) inside a file, you can use:
+	If [RADAR APPLICATION] writes instead (in real time) inside a file, you can use:
 
 	tail -f [FILE WRITTEN BY RADAR APPLICATION] | perl ./userProfile.pl [SETTING-FILE]
 
-	Evry <refreshTime> sec, the script userProfile.pl will overwrite the file "adv.html" with title
-	and file extracted from selected advertisment. The main html file "index.html" will reload
-	the content of "adv.html" each 10 sec, so, to show the updated advertisment you just need
+	Every <refreshTime> sec, the script userProfile.pl will overwrite the file "adv.html" with title
+	and file extracted from selected advertisement. The main html file "index.html" will reload
+	the content of "adv.html" each 10 sec, so, to show the updated advertisement you just need
 	to point your browser to this index.html file.
 
-	If your screen device is connected by Internet on Intranet to the machine that compute the 
+	If your screen device is connected to Internet or Intranet to the machine that computes the 
 	data, you need to contact the web-server on that machine pointing your browser to:
 
 	<webPageAdressRoot>/index.html
@@ -219,8 +219,8 @@ Main Content
 	In present repository you find four Perl files:
 
 	userProfile.pl
-		This is the main script. It collect radar data from STDIN and each <refreshTime> (sec), for each
-		user it compute the profile. After that, it merge all data in a new profile and use this last one
+		This is the main script. It collects radar data from STDIN and each <refreshTime> (sec), for each
+		user it computes the profile. After that, it merges all data in a new profile and uses this last one
 		to select and show advertisement.
 		Input data (one per line) should be in the format:
 
@@ -258,7 +258,7 @@ Main Content
 		This template file could help you to design your own implementation using our Profiler API.
 
 	radar.pl
-		This simple script simulate users passing near radar reading real SSID's from csv file 
+		This simple script simulates users passing near radar reading real SSID's from csv file 
 		and returning random lines at random times.
 
 
@@ -266,7 +266,7 @@ Main Content
 8. HTML Templates (how to customize advertisment view)
 ------------------------------------------------------
 
-	HTML is a very simple way to show advertisments. Basically the system works just 
+	HTML is a very simple way to show advertisements. Basically the system works just 
 	using two files:
 
 	index.html
@@ -276,8 +276,8 @@ Main Content
 	advTemplate.html
 		If you need to customize the view you have to change this file. "adv.html" is just a copy
 		of this file in which:
-		__IMAGE__ will be the content of "file" field of selected advertisment.
-		__TITLE__ will be the content of "name" field of selected advertisment.
+		__IMAGE__ will be the content of "file" field of selected advertisement.
+		__TITLE__ will be the content of "name" field of selected advertisement.
 
 
 ------------------------------------------------------
